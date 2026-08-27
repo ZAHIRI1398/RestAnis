@@ -249,14 +249,16 @@ def creer_reservation():
             # Importer depuis models pour éviter l'importation circulaire
             from models import db, Reservation
 
-            # Reference sequentielle : Table1, Table2, etc.
-            count = Reservation.query.count()
-            groupe_reference = f'Groupe{count + 1}'
+            # Reference sequentielle par date : Table1, Table2, etc.
+            # Le compteur se reinitialise pour chaque date.
+            groupe_count = Reservation.query.count()
+            groupe_reference = f'Groupe{groupe_count + 1}'
 
             reservations_creees = []
 
-            for i, date in enumerate(dates):
-                reference = f'Table{count + 1 + i}'
+            for date in dates:
+                count_date = Reservation.query.filter_by(date=date).count()
+                reference = f'Table{count_date + 1}'
                 nouvelle_reservation = Reservation(
                     reference=reference,
                     groupe_reference=groupe_reference,
