@@ -1,108 +1,83 @@
-# Configuration PostgreSQL sur Railway
+# Configuration PostgreSQL - Railway
 
-## ✅ Configuration actuelle
+## ✅ Statut
+PostgreSQL a été configuré avec succès sur Railway pour l'environnement de production.
 
-Votre application Flask est **déjà configurée** pour utiliser PostgreSQL sur Railway.
+## 📋 Détails de la configuration
 
-### Variables d'environnement disponibles
+### Service PostgreSQL
+- **Nom** : Postgres
+- **ID Service** : dbc930da-b962-4713-a180-52f60a6ce3e5
+- **Hôte** : postgres.railway.internal
+- **Port** : 5432 (par défaut PostgreSQL)
 
-Lorsque PostgreSQL est déployé sur Railway, ces variables sont automatiquement disponibles pour votre service `web`:
+### Variables d'environnement connectées à votre application web
+- `DATABASE_URL` - URL de connexion PostgreSQL complète
+- `PGHOST` - Nom d'hôte
+- `PGPORT` - Port
+- `PGUSER` - Utilisateur PostgreSQL
+- `PGPASSWORD` - Mot de passe PostgreSQL
+- `PGDATABASE` - Nom de la base de données
 
-```
-DATABASE_URL          → URL de connexion complète PostgreSQL
-PGHOST               → Hôte (ex: railway.internal)
-PGPORT               → Port (ex: 5432)
-PGUSER               → Nom d'utilisateur PostgreSQL
-PGPASSWORD           → Mot de passe généré automatiquement
-PGDATABASE           → Nom de la base de données
-```
+### Tables PostgreSQL
+Votre application crée automatiquement les tables suivantes :
 
-### Code déjà en place dans `main.py`
+1. **menu** - Catalogue des plats
+   - id, nom, description, prix, categorie, image
 
-```python
-# Votre application détecte automatiquement PostgreSQL
-DATABASE_URL = os.environ.get('DATABASE_URL', f'sqlite:///{basedir}/data/restaurant.db')
+2. **reservations** - Enregistrement des réservations clients
+   - id, reference, groupe_reference, nom, email, telephone, date, heure, personnes, message, statut, created_at
 
-# Configuration automatique du driver psycopg2
-if DATABASE_URL and DATABASE_URL.startswith('postgresql://'):
-    DATABASE_URL = DATABASE_URL.replace('postgresql://', 'postgresql+psycopg2://', 1)
+3. **menu_documents** - Documents PDF du menu
+4. **menu_document_pages** - Pages du menu (images PNG)
 
-# Configuration optimisée
-app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
-app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
-    'pool_pre_ping': True,      # Vérifier les connexions
-    'pool_recycle': 300         # Recycler les connexions tous les 5 min
-}
-```
+## 🔄 Flux de réservation
 
-## 🚀 Prochaines étapes
+1. **Client réserve sur le web** → `POST /reservation/creer_reservation`
+2. **Réservation enregistrée automatiquement** → Table `reservations` sur PostgreSQL
+3. **Email de réception envoyé** → Via Resend API
+4. **Admin valide la réservation** → Via tableau de bord `/admin/reservations`
+5. **Email de confirmation envoyé** → Au client
+6. **Données persistées** → Sur PostgreSQL
 
-### 1. Appliquer les changements sur Railway
-- ✅ PostgreSQL est déployé
-- ✅ Variables de connexion ajoutées au service `web`
-- Cliquez sur "Apply" dans l'interface Railway
+## 📊 Consultation des données
 
-### 2. Les tables se créent automatiquement au démarrage
-Votre `main.py` exécute `creer_tables()` au démarrage :
-```python
-with app.app_context():
-    creer_tables()
-```
+### Via Railway
+1. Allez à https://railway.com/project/16b352ef-573f-4bcd-951e-947022ff0ef0
+2. Sélectionnez le service "Postgres"
+3. Allez dans l'onglet "Data" pour voir les tables et les données
 
-### 3. Vérifier la connexion
-Après le déploiement, consultez les logs pour confirmer :
-```
-✅ Tables créées avec succès.
-```
-
-## 🔧 Dépannage
-
-### Test local avec PostgreSQL
-Si vous voulez tester avec PostgreSQL localement :
-
+### Via Python (local ou via Railway)
 ```bash
-# Installer PostgreSQL localement
-# Créer une base de données
-createdb restaurant
-
-# Exporter la variable (Linux/Mac)
-export DATABASE_URL="postgresql://user:password@localhost:5432/restaurant"
-
-# Ou sur Windows (PowerShell)
-$env:DATABASE_URL = "postgresql://user:password@localhost:5432/restaurant"
-
-# Lancer l'initialisation
 python init_postgres.py
 ```
 
-### Vérifier l'état sur Railway
+### Via ligne de commande
 ```bash
-# Voir les logs
-railway logs web     # Logs de votre app
-railway logs Postgres # Logs de la base de données
+psql $DATABASE_URL -c "SELECT * FROM reservations;"
 ```
 
-## 📝 Notes importantes
+## ✨ Changements effectués
 
-1. **Persistance des données** ✅
-   - PostgreSQL sur Railway persiste les données automatiquement
-   - Les migrations de schéma se font via `db.create_all()`
+- ✅ PostgreSQL template déployé sur Railway
+- ✅ Variables d'environnement PostgreSQL liées au service web
+- ✅ Votre code utilise déjà SQLAlchemy avec PostgreSQL (psycopg2)
+- ✅ Tables créées automatiquement au démarrage
 
-2. **Pool de connexions** ✅
-   - Configuré pour éviter les fuites de connexions
-   - Recycle automatique toutes les 5 minutes
+## 🚀 Prochaines étapes (optionnel)
 
-3. **SSL/TLS** ✅
-   - PostgreSQL sur Railway utilise SSL par défaut
-   - psycopg2 gère automatiquement la validation
+1. **Tester une réservation** sur votre site web
+2. **Vérifier les données** dans le tableau de bord admin `/admin/reservations`
+3. **Consulter PostgreSQL** via Railway ou via `psql`
 
-4. **Admin credentials** ⚠️
-   - Changez `ADMIN_PASSWORD` en production (actuellement: `password123`)
-   - Utilisez une variable d'environnement sécurisée
+## 📝 Remarques
 
-## 📚 Ressources
+- En local : SQLite (`data/restaurant.db`)
+- En production (Railway) : PostgreSQL
+- Les migrations se font automatiquement avec `db.create_all()`
+- Les emails de confirmation sont gérés par Resend (clé API requise dans les variables)
 
-- [Flask-SQLAlchemy Documentation](https://flask-sqlalchemy.palletsprojects.com/)
-- [Railway PostgreSQL](https://docs.railway.app/)
-- [psycopg2 Documentation](https://www.psycopg.org/)
+---
+
+**Vos clients peuvent maintenant réserver, et toutes les réservations sont persistées dans PostgreSQL ! 🎉**
 
