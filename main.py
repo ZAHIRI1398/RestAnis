@@ -519,14 +519,15 @@ def supprimer_reservation(id):
     return redirect(url_for('afficher_toutes_reservations'))
 
 def generate_reference(date=None):
-    """Generate a sequential reference like Table1, Table2, etc.
+    """Generate a sequential reference like Table1-2026-08-28, Table2-2026-08-28, etc.
     If date is provided, the counter resets for each date."""
     from models import Reservation
     if date:
         count = Reservation.query.filter_by(date=date).count()
+        return f'Table{count + 1}-{date}'
     else:
         count = Reservation.query.count()
-    return f'Table{count + 1}'
+        return f'Table{count + 1}'
 
 MENU_PDF_TAILLE_MAX = 5 * 1024 * 1024  # 5 Mo
 

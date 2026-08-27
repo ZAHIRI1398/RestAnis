@@ -258,7 +258,7 @@ def creer_reservation():
 
             for date in dates:
                 count_date = Reservation.query.filter_by(date=date).count()
-                reference = f'Table{count_date + 1}'
+                reference = f'Table{count_date + 1}-{date}'
                 nouvelle_reservation = Reservation(
                     reference=reference,
                     groupe_reference=groupe_reference,
