@@ -55,13 +55,16 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 def migrer_colonnes_manquantes():
     # Pas d'outil de migration en place : on ajoute ici les colonnes qui
-    # manqueraient sur une base existante, sans toucher aux données.
+    # manqueraient sur une base existante, sans toucher aux donnees.
     inspector = db.inspect(db.engine)
     if 'reservations' in inspector.get_table_names():
         colonnes = {c['name'] for c in inspector.get_columns('reservations')}
         if 'groupe_reference' not in colonnes:
             db.session.execute(db.text('ALTER TABLE reservations ADD COLUMN groupe_reference VARCHAR(20)'))
             db.session.commit()
+        # Etendre la colonne reference a VARCHAR(30) pour le format Table1-2026-08-28
+        db.session.execute(db.text('ALTER TABLE reservations ALTER COLUMN reference TYPE VARCHAR(30)'))
+        db.session.commit()
 
 def creer_tables():
     try:
