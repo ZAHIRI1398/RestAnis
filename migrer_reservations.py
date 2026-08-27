@@ -2,7 +2,7 @@
 """
 Migration des réservations d'une base source vers une base cible.
 
-But : consolider deux déploiements Railway (www.leboucheaoreilles.be et
+But : consolider deux déploiements Railway (www.restofourchette.be et
 web-production-85f59.up.railway.app) qui utilisent des bases PostgreSQL
 distinctes, en copiant les réservations manquantes de la base source
 (celle du domaine .be) vers la base cible (web-production-85f59).
@@ -119,7 +119,7 @@ def main():
     print(f"Mode : {'DRY-RUN (aucune écriture)' if args.dry_run else 'RÉEL (écriture)'}")
     print("=" * 60)
 
-    engine_src = connect(args.source, "SOURCE (www.leboucheaoreilles.be)")
+    engine_src = connect(args.source, "SOURCE (www.restofourchette.be)")
     engine_tgt = connect(args.target, "CIBLE (web-production-85f59)")
 
     existing = get_existing_references(engine_tgt)

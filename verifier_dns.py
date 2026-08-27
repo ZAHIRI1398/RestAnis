@@ -8,8 +8,8 @@ import sys
 
 def verifier_dns():
     """Vérifie si le sous-domaine pointe correctement vers Render"""
-    domaine = "app.leboucheaoreille.com"
-    cible_attendue = "le-bouche-a-oreilles-1.onrender.com"
+    domaine = "app.restofourchette.com"
+    cible_attendue = "resto-fourchette.onrender.com"
     
     print(f"🔍 Vérification DNS pour {domaine}")
     print("=" * 50)

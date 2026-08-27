@@ -13,7 +13,7 @@
 
 1. Connectez-vous à [resend.com/api-keys](https://resend.com/api-keys)
 2. Cliquez sur **"Create API Key"**
-3. Donnez-lui un nom (ex: `Restaurant Le Bouche à Oreilles`)
+3. Donnez-lui un nom (ex: `Resto Fourchette`)
 4. Sélectionnez **"Default Server"** (ou la région appropriée)
 5. Cliquez **"Create API Key"**
 6. **Copiez la clé** (elle commence par `re_...`)
@@ -54,12 +54,12 @@ railway up
 
 1. Allez dans **[resend.com/domains](https://resend.com/domains)**
 2. Cliquez sur **"Add Domain"**
-3. Entrez votre domaine (ex: `mail.leboucheaoreilles.be`)
+3. Entrez votre domaine (ex: `mail.restofourchette.be`)
 4. Suivez les étapes pour configurer les DNS records
 5. Une fois vérifié, mettez à jour la variable `EMAIL_FROM` :
 
 ```
-EMAIL_FROM=contact@leboucheaoreilles.be
+EMAIL_FROM=contact@restofourchette.be
 ```
 
 ### 5️⃣ Redéployer votre app
@@ -110,7 +110,7 @@ Cela signifie que :
 | Variable | Description | Exemple |
 |----------|-------------|---------|
 | `RESEND_API_KEY` | Clé API Resend | `re_VxpPtEic...` |
-| `EMAIL_FROM` | Adresse email d'envoi | `contact@leboucheaoreilles.be` |
+| `EMAIL_FROM` | Adresse email d'envoi | `contact@restofourchette.be` |
 | `TEST_EMAIL_REDIRECT` | (Optionnel) Rediriger les emails vers une adresse de test | `admin@test.com` |
 
 ## 🔒 Sécurité

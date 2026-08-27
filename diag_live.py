@@ -1,7 +1,7 @@
 import requests
 
 BASES = {
-    "BE (www.leboucheaoreilles.be)": "https://www.leboucheaoreilles.be",
+    "BE (www.restofourchette.be)": "https://www.restofourchette.be",
     "RAIL (web-production-85f59)": "https://web-production-85f59.up.railway.app",
 }
 
