@@ -249,15 +249,14 @@ def creer_reservation():
             # Importer depuis models pour éviter l'importation circulaire
             from models import db, Reservation
 
-            import random
-            import string
-            chars = string.ascii_uppercase + string.digits
-            groupe_reference = 'GRP-' + ''.join(random.choices(chars, k=8))
+            # Reference sequentielle : Table1, Table2, etc.
+            count = Reservation.query.count()
+            groupe_reference = f'Groupe{count + 1}'
 
             reservations_creees = []
 
-            for date in dates:
-                reference = 'RES-' + ''.join(random.choices(chars, k=8))
+            for i, date in enumerate(dates):
+                reference = f'Table{count + 1 + i}'
                 nouvelle_reservation = Reservation(
                     reference=reference,
                     groupe_reference=groupe_reference,

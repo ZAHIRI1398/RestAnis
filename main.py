@@ -518,13 +518,11 @@ def supprimer_reservation(id):
     
     return redirect(url_for('afficher_toutes_reservations'))
 
-import random
-import string
-
 def generate_reference():
-    """Generate a unique reference for reservations"""
-    chars = string.ascii_uppercase + string.digits
-    return 'RES-' + ''.join(random.choices(chars, k=8))
+    """Generate a sequential reference like Table1, Table2, etc."""
+    from models import Reservation
+    count = Reservation.query.count()
+    return f'Table{count + 1}'
 
 MENU_PDF_TAILLE_MAX = 5 * 1024 * 1024  # 5 Mo
 
