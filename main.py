@@ -1,5 +1,7 @@
 import os
 import datetime
+import json
+import base64
 from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response
 import logging
 from functools import wraps
@@ -678,35 +680,100 @@ def modifier_reservation(id):
         return render_template('modifier_reservation.html', reservation=reservation)
         
     except Exception as e:
-        db.session.rollback()
         app.logger.error(f"Erreur lors de la modification de la réservation: {str(e)}")
         flash('Une erreur est survenue lors de la modification de la réservation.', 'error')
         return redirect(url_for('afficher_toutes_reservations'))
 
-@app.route('/confirmation-groupe/<groupe_reference>')
-def confirmation_groupe(groupe_reference):
+@app.route('/admin/backup', methods=['POST'])
+@login_required
+def backup_database():
+    """Exporte toutes les reservations en JSON et pousse le fichier sur GitHub."""
     try:
-        reservations = Reservation.query.filter_by(groupe_reference=groupe_reference).order_by(Reservation.date).all()
+        import requests
 
-        if not reservations:
-            flash('Réservation non trouvée.', 'error')
-            return redirect(url_for('accueil'))
+        reservations = Reservation.query.order_by(Reservation.id).all()
+        data = []
+        for r in reservations:
+            data.append({
+                'id': r.id,
+                'reference': r.reference,
+                'groupe_reference': r.groupe_reference,
+                'nom': r.nom,
+                'email': r.email,
+                'telephone': r.telephone,
+                'date': r.date,
+                'heure': r.heure,
+                'personnes': r.personnes,
+                'message': r.message,
+                'statut': r.statut,
+                'created_at': r.created_at.isoformat() if r.created_at else None,
+            })
 
-        for reservation in reservations:
-            try:
-                date_obj = datetime.strptime(str(reservation.date), '%Y-%m-%d')
-                reservation.date_formatted = date_obj.strftime('%d/%m/%Y')
-            except (ValueError, TypeError) as e:
-                app.logger.error(f"Erreur de formatage de date: {e}")
-                reservation.date_formatted = reservation.date
+        json_content = json.dumps(data, ensure_ascii=False, indent=2)
+        timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
-        return render_template('confirmation_groupe.html', reservations=reservations, premiere=reservations[0])
+        github_token = os.environ.get('GITHUB_BACKUP_TOKEN')
+        github_repo = os.environ.get('GITHUB_BACKUP_REPO', 'ZAHIRI1398/RestAnis')
+        github_branch = os.environ.get('GITHUB_BACKUP_BRANCH', 'main')
+        backup_dir = os.environ.get('GITHUB_BACKUP_DIR', 'backups')
+
+        filename = f'{backup_dir}/reservations_{timestamp}.json'
+        latest_filename = f'{backup_dir}/reservations_latest.json'
+
+        if not github_token:
+            backup_folder = os.path.join(os.path.dirname(__file__), 'backups')
+            os.makedirs(backup_folder, exist_ok=True)
+            local_path = os.path.join(backup_folder, f'reservations_{timestamp}.json')
+            with open(local_path, 'w', encoding='utf-8') as f:
+                f.write(json_content)
+            latest_path = os.path.join(backup_folder, 'reservations_latest.json')
+            with open(latest_path, 'w', encoding='utf-8') as f:
+                f.write(json_content)
+            flash(f'Sauvegarde locale creee: {local_path} ({len(data)} reservations). '
+                  f'Configurez GITHUB_BACKUP_TOKEN pour pousser vers GitHub.', 'success')
+            return redirect(url_for('afficher_toutes_reservations'))
+
+        api_url = f'https://api.github.com/repos/{github_repo}/contents/{filename}'
+        headers = {
+            'Authorization': f'token {github_token}',
+            'Accept': 'application/vnd.github.v3+json',
+        }
+        payload = {
+            'message': f'Sauvegarde automatique des reservations - {timestamp}',
+            'branch': github_branch,
+            'content': base64.b64encode(json_content.encode('utf-8')).decode('utf-8'),
+        }
+        resp = requests.put(api_url, headers=headers, json=payload, timeout=30)
+
+        if resp.status_code not in (201, 200):
+            app.logger.error(f"Erreur GitHub API (fichier horodate): {resp.status_code} {resp.text}")
+            flash(f'Erreur lors de la sauvegarde vers GitHub: {resp.status_code}', 'error')
+            return redirect(url_for('afficher_toutes_reservations'))
+
+        latest_url = f'https://api.github.com/repos/{github_repo}/contents/{latest_filename}'
+        latest_payload = {
+            'message': f'Mise a jour sauvegarde latest - {timestamp}',
+            'branch': github_branch,
+            'content': base64.b64encode(json_content.encode('utf-8')).decode('utf-8'),
+        }
+
+        get_resp = requests.get(latest_url, headers=headers, timeout=30)
+        if get_resp.status_code == 200:
+            latest_payload['sha'] = get_resp.json().get('sha')
+
+        resp2 = requests.put(latest_url, headers=headers, json=latest_payload, timeout=30)
+
+        if resp2.status_code not in (201, 200):
+            app.logger.warning(f"Erreur GitHub API (latest): {resp2.status_code} {resp2.text}")
+
+        flash(f'Sauvegarde GitHub reussie: {len(data)} reservations sauvegardees dans {filename}', 'success')
 
     except Exception as e:
-        app.logger.error(f"Erreur lors de la récupération de la réservation: {str(e)}")
-        flash('Une erreur est survenue lors de la récupération de votre réservation.', 'error')
-        return redirect(url_for('accueil'))
-   
+        app.logger.error(f"Erreur lors de la sauvegarde: {e}")
+        flash(f'Erreur lors de la sauvegarde: {str(e)}', 'error')
+
+    return redirect(url_for('afficher_toutes_reservations'))
+
 
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0',port=5000)

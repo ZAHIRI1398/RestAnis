@@ -171,6 +171,11 @@
                     <button onclick="window.print()" class="btn btn-outline-secondary me-3 no-print">
                         <i class="bi bi-printer"></i> Imprimer
                     </button>
+                    <form action="{{ url_for('backup_database') }}" method="POST" class="me-3 no-print" onsubmit="return confirm('Sauvegarder les reservations vers GitHub ?');">
+                        <button type="submit" class="btn btn-outline-primary">
+                            <i class="bi bi-cloud-upload"></i> Sauvegarder
+                        </button>
+                    </form>
                     <span class="me-2">Filtrer :</span>
                     <div class="btn-group" role="group">
                         <a href="{{ url_for('afficher_toutes_reservations') }}" class="btn {% if statut_actuel %}btn-outline-secondary{% else %}btn-secondary{% endif %}">Toutes</a>
