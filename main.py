@@ -2,6 +2,8 @@ import os
 import datetime
 import json
 import base64
+import threading
+import time as time_module
 from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response
 import logging
 from functools import wraps
@@ -773,6 +775,108 @@ def backup_database():
         flash(f'Erreur lors de la sauvegarde: {str(e)}', 'error')
 
     return redirect(url_for('afficher_toutes_reservations'))
+
+
+def _envoyer_backup_github():
+    """Fonction interne : exporte les reservations et pousse vers GitHub."""
+    try:
+        import requests
+        from models import Reservation
+
+        reservations = Reservation.query.order_by(Reservation.id).all()
+        data = []
+        for r in reservations:
+            data.append({
+                'id': r.id,
+                'reference': r.reference,
+                'groupe_reference': r.groupe_reference,
+                'nom': r.nom,
+                'email': r.email,
+                'telephone': r.telephone,
+                'date': r.date,
+                'heure': r.heure,
+                'personnes': r.personnes,
+                'message': r.message,
+                'statut': r.statut,
+                'created_at': r.created_at.isoformat() if r.created_at else None,
+            })
+
+        json_content = json.dumps(data, ensure_ascii=False, indent=2)
+        timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+
+        github_token = os.environ.get('GITHUB_BACKUP_TOKEN')
+        github_repo = os.environ.get('GITHUB_BACKUP_REPO', 'ZAHIRI1398/RestAnis')
+        github_branch = os.environ.get('GITHUB_BACKUP_BRANCH', 'main')
+        backup_dir = os.environ.get('GITHUB_BACKUP_DIR', 'backups')
+
+        if not github_token:
+            app.logger.warning("GITHUB_BACKUP_TOKEN non configure - sauvegarde automatique ignoree.")
+            return
+
+        filename = f'{backup_dir}/reservations_{timestamp}.json'
+        latest_filename = f'{backup_dir}/reservations_latest.json'
+
+        api_url = f'https://api.github.com/repos/{github_repo}/contents/{filename}'
+        headers = {
+            'Authorization': f'token {github_token}',
+            'Accept': 'application/vnd.github.v3+json',
+        }
+        payload = {
+            'message': f'Sauvegarde automatique quotidienne - {timestamp}',
+            'branch': github_branch,
+            'content': base64.b64encode(json_content.encode('utf-8')).decode('utf-8'),
+        }
+        resp = requests.put(api_url, headers=headers, json=payload, timeout=30)
+
+        if resp.status_code not in (201, 200):
+            app.logger.error(f"Sauvegarde auto GitHub (fichier horodate): {resp.status_code} {resp.text}")
+            return
+
+        latest_url = f'https://api.github.com/repos/{github_repo}/contents/{latest_filename}'
+        latest_payload = {
+            'message': f'Mise a jour sauvegarde latest - {timestamp}',
+            'branch': github_branch,
+            'content': base64.b64encode(json_content.encode('utf-8')).decode('utf-8'),
+        }
+
+        get_resp = requests.get(latest_url, headers=headers, timeout=30)
+        if get_resp.status_code == 200:
+            latest_payload['sha'] = get_resp.json().get('sha')
+
+        resp2 = requests.put(latest_url, headers=headers, json=latest_payload, timeout=30)
+        if resp2.status_code not in (201, 200):
+            app.logger.warning(f"Sauvegarde auto GitHub (latest): {resp2.status_code} {resp2.text}")
+
+        app.logger.info(f"Sauvegarde auto GitHub reussie: {len(data)} reservations dans {filename}")
+
+    except Exception as e:
+        app.logger.error(f"Erreur sauvegarde auto: {e}")
+
+
+def _boucle_sauvegarde_auto():
+    """Thread de fond : execute la sauvegarde tous les jours a 23h00."""
+    while True:
+        now = datetime.now()
+        # Calculer le temps jusqu'a 23h00
+        cible = now.replace(hour=23, minute=0, second=0, microsecond=0)
+        if now >= cible:
+            cible += datetime.timedelta(days=1)
+        secondes_attente = (cible - now).total_seconds()
+        time_module.sleep(secondes_attente)
+
+        try:
+            with app.app_context():
+                _envoyer_backup_github()
+        except Exception as e:
+            app.logger.error(f"Erreur thread sauvegarde auto: {e}")
+
+        # Attendre 60s pour eviter de relancer immediatement
+        time_module.sleep(60)
+
+
+# Demarrer le thread de sauvegarde automatique au lancement de l'app
+thread_backup = threading.Thread(target=_boucle_sauvegarde_auto, daemon=True)
+thread_backup.start()
 
 
 if __name__ == '__main__':
