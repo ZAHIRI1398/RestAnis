@@ -10,9 +10,9 @@ reservation_bp = Blueprint('reservation', __name__)
 # Configuration de Resend
 RESEND_API_KEY = os.environ.get('RESEND_API_KEY')
 EMAIL_FROM = os.environ.get('EMAIL_FROM', 'contact@restofourchette.be')
-EMAIL_SUBJECT = 'Confirmation de votre réservation - Resto Fourchette'
-EMAIL_SUBJECT_ANNULATION = 'Annulation de votre réservation - Resto Fourchette'
-EMAIL_SUBJECT_RECEPTION = 'Réception de votre demande de réservation - Resto Fourchette'
+EMAIL_SUBJECT = 'Confirmation de votre réservation - La Fourchette en Herbe'
+EMAIL_SUBJECT_ANNULATION = 'Annulation de votre réservation - La Fourchette en Herbe'
+EMAIL_SUBJECT_RECEPTION = 'Réception de votre demande de réservation - La Fourchette en Herbe'
 
 # Pour les tests avec Resend gratuit, rediriger tous les emails vers votre adresse
 TEST_EMAIL_REDIRECT = os.environ.get('TEST_EMAIL_REDIRECT', '')
@@ -65,7 +65,7 @@ def envoyer_confirmation_email(nom, email, date, heure, personnes, reference):
             
             <div style="background-color: #e9ecef; padding: 15px; border-radius: 10px; text-align: center;">
                 <p style="margin: 0; color: #6c757d;">Nous vous remercions pour votre confiance et nous réjouissons de vous accueillir dans notre établissement.</p>
-                <p style="margin: 10px 0 0 0; color: #6c757d;"><strong>Cordialement,<br>L'équipe du Resto Fourchette</strong></p>
+                <p style="margin: 10px 0 0 0; color: #6c757d;"><strong>Cordialement,<br>L'équipe du La Fourchette en Herbe</strong></p>
             </div>
         </body>
         </html>
@@ -134,7 +134,7 @@ def envoyer_annulation_email(nom, email, date, heure, personnes, reference):
 
             <div style="background-color: #e9ecef; padding: 15px; border-radius: 10px; text-align: center;">
                 <p style="margin: 0; color: #6c757d;">Pour toute question ou pour effectuer une nouvelle réservation, n'hésitez pas à nous contacter.</p>
-                <p style="margin: 10px 0 0 0; color: #6c757d;"><strong>Cordialement,<br>L'équipe du Resto Fourchette</strong></p>
+                <p style="margin: 10px 0 0 0; color: #6c757d;"><strong>Cordialement,<br>L'équipe du La Fourchette en Herbe</strong></p>
             </div>
         </body>
         </html>
@@ -200,7 +200,7 @@ def envoyer_reception_email(nom, email, date, heure, personnes, reference):
 
             <div style="background-color: #e9ecef; padding: 15px; border-radius: 10px; text-align: center;">
                 <p style="margin: 0; color: #6c757d;">Nous reviendrons vers vous très prochainement pour confirmer votre réservation.</p>
-                <p style="margin: 10px 0 0 0; color: #6c757d;"><strong>Cordialement,<br>L'équipe du Resto Fourchette</strong></p>
+                <p style="margin: 10px 0 0 0; color: #6c757d;"><strong>Cordialement,<br>L'équipe du La Fourchette en Herbe</strong></p>
             </div>
         </body>
         </html>

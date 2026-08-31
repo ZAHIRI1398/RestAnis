@@ -13,7 +13,7 @@
 
 1. Connectez-vous à [resend.com/api-keys](https://resend.com/api-keys)
 2. Cliquez sur **"Create API Key"**
-3. Donnez-lui un nom (ex: `Resto Fourchette`)
+3. Donnez-lui un nom (ex: `La Fourchette en Herbe`)
 4. Sélectionnez **"Default Server"** (ou la région appropriée)
 5. Cliquez **"Create API Key"**
 6. **Copiez la clé** (elle commence par `re_...`)
