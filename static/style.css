@@ -6,7 +6,7 @@ body {
 
 /* Styles pour les titres h1 et h2 */
 h1, h2 {
-    color: #9811ec;
+    color: #2d8659;
 }
 
 /* Styles pour les liens */
@@ -42,16 +42,16 @@ input[type="text"], input[type="number"] {
 
 /* Bouton valider */
 .btn-valider {
-    background-color: #4CAF50;
+    background-color: #2d8659;
     color: white;
     padding: 10px 20px;
     border: none;
     cursor: pointer;
-    font-size: 16px; /* Taille du texte légèrement plus grande */
+    font-size: 16px;
 }
 
 .btn-valider:hover {
-    background-color: #45a049;
+    background-color: #1f6b47;
 }
 
 /* Style pour les divs avec bordure */
