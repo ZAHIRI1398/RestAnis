@@ -10,7 +10,7 @@
     .hero-photo { position: relative; }
     .hero-photo img { width: 100%; height: 420px; object-fit: cover; }
     .hero-photo img.hero-logo {
-        position: absolute; top: 20px; left: 20px; width: clamp(110px, 20vw, 170px); height: clamp(110px, 20vw, 170px);
+        position: absolute; top: 20px; left: 20px; width: clamp(150px, 26vw, 230px); height: clamp(150px, 26vw, 230px);
         border-radius: 50%; box-shadow: 0 2px 10px rgba(0,0,0,.3); object-fit: cover;
     }
     .hero-actions { position: absolute; top: 20px; right: 20px; display: flex; flex-direction: column; gap: .6rem; }
@@ -50,7 +50,7 @@
 <!-- Hero -->
 <div class="hero-photo mb-0">
     <img src="{{ url_for('static', filename='images/hero-salle1.jpg') }}" alt="Salle du restaurant La Fourchette en Herbe">
-    <img src="{{ url_for('static', filename='images/logo-sainte-bernadette.png') }}" alt="Logo Restaurant Didactique - Centre scolaire Eperonniers Mercelles" class="hero-logo">
+    <img src="{{ url_for('static', filename='images/logo-fourchette-en-herbe.svg') }}" alt="Logo La Fourchette en Herbe - Centre scolaire Eperonniers Mercelles" class="hero-logo">
     <div class="hero-actions">
         <a href="{{ url_for('menu') }}" class="btn btn-hero">Menu</a>
         <a href="{{ url_for('reservation.reserver') }}" class="btn btn-hero">Réserver</a>
@@ -142,7 +142,7 @@
 
 <!-- Signature établissement -->
 <div class="text-center py-4 footer-logo-band band-white">
-    <img src="{{ url_for('static', filename='images/logo-footer-sainte-bernadette.png') }}" alt="Centre scolaire Eperonniers Mercelles">
+    <img src="{{ url_for('static', filename='images/logo-footer-fourchette-en-herbe.svg') }}" alt="Centre scolaire Eperonniers Mercelles">
     <p class="mt-3 mb-0">
         <a href="{{ url_for('static', filename='politique-vie-privee.pdf') }}" target="_blank"
            style="color: #6c757d; font-size: .9rem; text-decoration: none;">
