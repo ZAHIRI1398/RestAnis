@@ -10,7 +10,7 @@ reservation_bp = Blueprint('reservation', __name__)
 
 # Configuration de Resend
 RESEND_API_KEY = os.environ.get('RESEND_API_KEY')
-EMAIL_FROM = os.environ.get('EMAIL_FROM', 'contact@restofourchette.be')
+EMAIL_FROM = os.environ.get('EMAIL_FROM', 'contact@lafourchetteenherbe.com')
 EMAIL_SUBJECT = 'Confirmation de votre réservation - La Fourchette en Herbe'
 EMAIL_SUBJECT_ANNULATION = 'Annulation de votre réservation - La Fourchette en Herbe'
 EMAIL_SUBJECT_RECEPTION = 'Réception de votre demande de réservation - La Fourchette en Herbe'
