@@ -369,7 +369,7 @@ def creer_reservation():
                 flash('Votre réservation a été enregistrée avec succès !', 'success')
             else:
                 flash(f'Votre réservation a été enregistrée avec succès pour {len(dates)} dates !', 'success')
-            return redirect(url_for('confirmation_groupe', groupe_reference=groupe_reference))
+            return redirect(url_for('reservation.confirmation'))
 
         except Exception as e:
             db.session.rollback()
@@ -385,7 +385,7 @@ def confirmation():
     # Récupérer les détails de la réservation
     try:
         from models import Reservation
-        reservation = Reservation.query.filter_by(reference=reference).first()
+        reservation = Reservation.query.filter_by(groupe_reference=reference).first()
         if reservation:
             return render_template('reservation_success.html', 
                                  reference=reservation.reference,
