@@ -111,9 +111,19 @@
                     </ul>
             </div>
             <div class="col-md-6">
-                <div class="photo-collage">
-                    <img src="{{ url_for('static', filename='images/plat-formule-3.jpg') }}" alt="Plat de la formule" class="photo-1">
-                    <img src="{{ url_for('static', filename='images/plat-formule-4.jpg') }}" alt="Plat de la formule" class="photo-2">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <img src="{{ url_for('static', filename='images/plat-formule-1.jpg') }}" alt="Plat de la formule" class="img-fluid rounded shadow-sm">
+                    </div>
+                    <div class="col-6">
+                        <img src="{{ url_for('static', filename='images/plat-formule-2.jpg') }}" alt="Plat de la formule" class="img-fluid rounded shadow-sm">
+                    </div>
+                    <div class="col-6">
+                        <img src="{{ url_for('static', filename='images/plat-formule-3.jpg') }}" alt="Plat de la formule" class="img-fluid rounded shadow-sm">
+                    </div>
+                    <div class="col-6">
+                        <img src="{{ url_for('static', filename='images/plat-formule-4.jpg') }}" alt="Plat de la formule" class="img-fluid rounded shadow-sm">
+                    </div>
                 </div>
             </div>
         </div>
