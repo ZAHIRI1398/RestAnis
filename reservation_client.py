@@ -24,7 +24,7 @@ def reserver():
 
 # Nombre maximum de personnes par date. Au-dela, la date
 # est consideree comme complete et n'est plus reservable.
-MAX_PERSONNES_PAR_DATE = 26
+MAX_PERSONNES_PAR_DATE = 40
 
 @reservation_bp.route('/api/occupation-dates')
 def api_occupation_dates():

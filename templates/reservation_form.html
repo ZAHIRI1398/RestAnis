@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Occupation des dates : { "2026-09-10": 20, ... }
     // Les dates ayant atteint le maximum ne sont pas cliquables.
     let occupationDates = {};
-    let maxPersonnes = 26;
+    let maxPersonnes = 40;
 
     const grilleEl = document.getElementById('calendrier-grille');
     const labelEl = document.getElementById('mois-label');
@@ -347,7 +347,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             if (data.occupation) {
                 occupationDates = data.occupation;
-                maxPersonnes = data.max_personnes || 26;
+                maxPersonnes = data.max_personnes || 40;
                 dessinerCalendrier();
             }
         })
