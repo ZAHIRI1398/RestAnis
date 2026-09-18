@@ -7,7 +7,7 @@ import time as time_module
 from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response
 import logging
 from functools import wraps
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -881,7 +881,7 @@ def _boucle_sauvegarde_auto():
         # Calculer le temps jusqu'a 23h00
         cible = now.replace(hour=23, minute=0, second=0, microsecond=0)
         if now >= cible:
-            cible += datetime.timedelta(days=1)
+            cible += timedelta(days=1)
         secondes_attente = (cible - now).total_seconds()
         time_module.sleep(secondes_attente)
 
