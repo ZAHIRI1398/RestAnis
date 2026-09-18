@@ -598,7 +598,7 @@
     "heure": "12:00",
     "personnes": 3,
     "message": "",
-    "statut": "confirmee",
+    "statut": "annulee",
     "created_at": "2026-09-13T07:43:56.100895"
   },
   {
@@ -864,7 +864,7 @@
     "heure": "12:00",
     "personnes": 2,
     "message": "",
-    "statut": "confirmee",
+    "statut": "annulee",
     "created_at": "2026-09-13T16:05:12.162983"
   },
   {
@@ -906,7 +906,7 @@
     "heure": "12:00",
     "personnes": 4,
     "message": "",
-    "statut": "confirmee",
+    "statut": "annulee",
     "created_at": "2026-09-13T19:32:46.829390"
   },
   {
@@ -1018,7 +1018,7 @@
     "heure": "12:00",
     "personnes": 2,
     "message": "",
-    "statut": "confirmee",
+    "statut": "annulee",
     "created_at": "2026-09-14T13:48:11.821702"
   },
   {
@@ -1174,5 +1174,117 @@
     "message": "Si possible une table près d’une fenêtre ",
     "statut": "confirmee",
     "created_at": "2026-09-15T16:32:58.921936"
+  },
+  {
+    "id": 134,
+    "reference": "Table1-2026-10-23",
+    "groupe_reference": "Groupe85",
+    "nom": "BOÜÜAERT Danièle",
+    "email": "daniele.bouuaert@gmail.com",
+    "telephone": "+32474231871",
+    "date": "2026-10-23",
+    "heure": "12:00",
+    "personnes": 2,
+    "message": "",
+    "statut": "annulee",
+    "created_at": "2026-09-16T06:19:37.278239"
+  },
+  {
+    "id": 135,
+    "reference": "Table1-2026-11-13",
+    "groupe_reference": "Groupe86",
+    "nom": "BOÜÜAERT Danièle",
+    "email": "daniele.bouuaert@gmail.com",
+    "telephone": "+32474231871",
+    "date": "2026-11-13",
+    "heure": "12:00",
+    "personnes": 2,
+    "message": "",
+    "statut": "confirmee",
+    "created_at": "2026-09-16T12:35:07.343273"
+  },
+  {
+    "id": 136,
+    "reference": "Table3-2026-09-29",
+    "groupe_reference": "Groupe87",
+    "nom": "Dewespin christian",
+    "email": "dewespin@gmail.com",
+    "telephone": "0485841130",
+    "date": "2026-09-29",
+    "heure": "12:00",
+    "personnes": 4,
+    "message": "",
+    "statut": "confirmee",
+    "created_at": "2026-09-16T13:32:31.850290"
+  },
+  {
+    "id": 137,
+    "reference": "Table5-2026-10-01",
+    "groupe_reference": "Groupe88",
+    "nom": "Bullman Rosanz",
+    "email": "rosane_bullman@hotmail.com",
+    "telephone": "+32473915736",
+    "date": "2026-10-01",
+    "heure": "12:00",
+    "personnes": 2,
+    "message": "",
+    "statut": "annulee",
+    "created_at": "2026-09-16T21:15:24.548821"
+  },
+  {
+    "id": 138,
+    "reference": "Table4-2026-09-28",
+    "groupe_reference": "Groupe89",
+    "nom": "Aust véronique ",
+    "email": "aust.veronique@gmail.com",
+    "telephone": "0484256667",
+    "date": "2026-09-28",
+    "heure": "12:00",
+    "personnes": 2,
+    "message": "",
+    "statut": "confirmee",
+    "created_at": "2026-09-17T12:01:02.343689"
+  },
+  {
+    "id": 139,
+    "reference": "Table6-2026-10-01",
+    "groupe_reference": "Groupe90",
+    "nom": "Bullman Rosane ",
+    "email": "rosane_bullman@hotmail.com",
+    "telephone": "+32473915736",
+    "date": "2026-10-01",
+    "heure": "12:00",
+    "personnes": 2,
+    "message": "",
+    "statut": "confirmee",
+    "created_at": "2026-09-17T13:13:27.536978"
+  },
+  {
+    "id": 140,
+    "reference": "Table1-2026-09-23",
+    "groupe_reference": "Groupe91",
+    "nom": "Martin Paulette ",
+    "email": "paulette.vryens@gmail.com",
+    "telephone": "0476 51 55 08",
+    "date": "2026-09-23",
+    "heure": "12:00",
+    "personnes": 2,
+    "message": "",
+    "statut": "annulee",
+    "created_at": "2026-09-18T08:58:18.745834"
+  },
+  {
+    "id": 141,
+    "reference": "Table3-2026-12-04",
+    "groupe_reference": "Groupe92",
+    "nom": "karin waelkens",
+    "email": "karin.waelkens@gmail.com",
+    "telephone": "0476598974",
+    "date": "2026-12-04",
+    "heure": "12:00",
+    "personnes": 4,
+    "message": "",
+    "statut": "confirmee",
+    "created_at": "2026-09-18T15:23:44.031664"
   }
 ]
