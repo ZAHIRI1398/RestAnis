@@ -94,7 +94,7 @@
                     <div class="step-num">3</div>
                     <div class="step-text">
                         <strong>Sélectionnez une ou plusieurs dates dans le calendrier</strong><br>
-                        <small>Naviguez avec les flèches ‹ › pour changer de mois. Cliquez sur les dates souhaitées (en orange). Vous pouvez sélectionner <strong>plusieurs dates</strong> en une seule demande. Les week-ends et jours passés ne sont pas disponibles.</small>
+                        <small>Naviguez avec les flèches ‹ › pour changer de mois. Cliquez sur les dates souhaitées (en orange). Vous pouvez sélectionner <strong>plusieurs dates</strong> en une seule demande. Les week-ends, mercredis et jours passés ne sont pas disponibles.</small>
                     </div>
                 </div>
                 <div class="step-item">
@@ -290,6 +290,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const date = new Date(annee, mois, jour);
             const iso = versISO(date);
             const estWeekend = date.getDay() === 0 || date.getDay() === 6;
+            const estMercredi = date.getDay() === 3;
             const estPasse = date < aujourdhui;
             const totalPersonnes = occupationDates[iso] || 0;
             const estComplete = totalPersonnes >= maxPersonnes;
@@ -297,7 +298,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const el = document.createElement('div');
             el.textContent = jour;
 
-            if (estWeekend || estPasse) {
+            if (estWeekend || estMercredi || estPasse) {
                 el.className = 'calendrier-case indisponible';
             } else if (estComplete) {
                 el.className = 'calendrier-case complete';
