@@ -1480,7 +1480,7 @@
     "heure": "12:00",
     "personnes": 3,
     "message": "",
-    "statut": "en_attente",
+    "statut": "confirmee",
     "created_at": "2026-09-23T18:01:50.225162"
   },
   {
@@ -1494,7 +1494,21 @@
     "heure": "12:00",
     "personnes": 4,
     "message": "",
-    "statut": "en_attente",
+    "statut": "annulee",
     "created_at": "2026-09-23T18:04:41.888835"
+  },
+  {
+    "id": 158,
+    "reference": "Table4-2026-10-15",
+    "groupe_reference": "Groupe108",
+    "nom": "Delvaux Yves",
+    "email": "delvaux.lallemand@skynet.be",
+    "telephone": "0495664309",
+    "date": "2026-10-15",
+    "heure": "12:00",
+    "personnes": 2,
+    "message": "",
+    "statut": "confirmee",
+    "created_at": "2026-09-24T15:54:12.049483"
   }
 ]
